@@ -8,14 +8,15 @@
 // Where ':id' is the id of the selected recipe.
 
     async function getInfo(){
-        const url_recipes = `http://localhost:3030/jsonstore/cookbook`;
+        // const url_recipes = `http://localhost:3030/jsonstore/cookbook`;
         const main = document.querySelector('main');
 
         try{
-            const res = await fetch(url_recipes);
+            const res = await fetch(`http://localhost:3030/jsonstore/cookbook`);
             if(res.ok == false) throw new Error(res.statusText);
 
             const recipes = await res.json();
+            console.log(recipes);
             main.innerHTML = '';
             //console.log(info['details']);
             Object.values(recipes['recipes']).map(createPreview).forEach(a => main.appendChild(a));
@@ -110,5 +111,28 @@
         return elem;
     }
     
-        
+// standard func for creating els and els in els
+function e(type, attributes, ...content){
+    const result = document.createElement(type);
+
+    for(let [attr, val] of Object.entries(attributes || {})){
+        if(attr.substring(0,2) == 'on'){
+            result.addEventListener(attr.substring(2).toLocaleLowerCase(), val);
+        }else{
+            result[attr] = val;
+        }
+    }
+
+    content = content.reduce((a,c) => a.concat(Array.isArray(c) ? c : [c]), []);
+    content.forEach(el => {
+        if(typeof el == 'string' || typeof el == 'number'){
+            const node = document.createTextNode(el);
+            result.appendChild(node);
+        }else{
+            result.appendChild(el);
+        }
+    });
+
+    return result;
+}
         

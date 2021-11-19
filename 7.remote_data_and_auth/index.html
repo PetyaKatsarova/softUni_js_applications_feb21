@@ -4,5 +4,127 @@
 </head>
 <body>
     <h1>Remote Data and Auth</h1>
-    <script src="./index.js"></script>
+    <h2>Register</h2>
+    <form id='registerForm' method='POST', action='/users/register'>
+        <label>Email: <input type="text" name="email" /></label>
+        <label>Password: <input type="password" name="password" /></label>
+        <label>Repeat: <input type="password" name="repass" /></label>
+        <input type="submit" value="Register" />
+    </form>
+
+    <h2>Login</h2>
+    <form id='loginForm' method='POST', action='/users/login'>
+        <label>Email: <input type="text" name="email" /></label>
+        <label>Password: <input type="password" name="password" /></label>
+        <input type="submit" value="Login" />
+    </form>
+
+    <h2>Create</h2>
+    <form id='createForm'>
+        <label>Name: <input type="text" name="name" /></label>
+        <label>Value: <input type="text" name="val" /></label>
+        <input type="submit" value="Create" />
+    </form>
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', e => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+
+            const email = formData.get('email');
+            const password = formData.get('password');
+            const repass = formData.get('repass');
+
+            if(email == '' || password == ''){
+                return alert('All fields are required');
+            }else if(password !== repass){
+                return alert('Passwords don\'t match.');
+            }
+            register(email, password);
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', e => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+
+            const email = formData.get('email');
+            const password = formData.get('password');
+
+            login(email, password);
+        });
+
+        document.getElementById('createForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+
+            const name = formData.get('name');
+            const val = formData.get('val');
+
+            const result = await postData({name, val});
+            console.log(result);
+        });
+
+        async function register(email, password) {
+            const response = await fetch('http://localhost:3030/users/register', {
+                method: 'post',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({email, password})
+            });
+
+            if(response.ok){
+                const data = await response.json();
+                sessionStorage.setItem('authToken', data.accessToken);
+                console.log(data);
+            }else{
+                const error = await response.json();
+                alert(error.message);
+            }
+        }
+        async function login(email, password){
+            const response = await fetch('http://localhost:3030/users/login', {
+                method: 'post',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({email, password})
+            });
+
+            if(response.ok){
+                const data = await response.json();
+                sessionStorage.setItem('authToken', data.accessToken);
+                console.log(data);
+            }else{
+                const error = await response.json();
+                alert(error.message);
+                // alert(`Error ${response.statusText}`);
+            }
+        }
+        //token: e43d077fd12f73dbf74bae74980ab87bb93a172bed0e97b96ce96a20a9731b4e
+        async function getData(){
+            const options = {
+                method: 'get',
+                headers: {}
+            }
+            const token = sessionStorage.getItem('authToken');
+            if(token !== null){
+                options.headers['X-Authorization'] = token;
+            }
+
+            const res = await fetch(`http://localhost:3030/data/records`, options);
+            return await res.json();
+        }
+        async function postData(data){
+            const options = {
+                method: 'post',
+                headers: {},
+                body: JSON.stringify(data)
+            }
+            const token = sessionStorage.getItem('authToken');
+            if(token !== null){
+                options.headers['X-Authorization'] = token;
+            }
+
+            const res = await fetch(`http://localhost:3030/data/records`, options);
+            return await res.json();
+        }
+
+    </script>
+    <!-- <script src="./index.js"></script> -->
 </body>

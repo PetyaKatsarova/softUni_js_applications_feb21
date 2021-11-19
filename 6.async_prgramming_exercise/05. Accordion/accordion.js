@@ -1,3 +1,5 @@
+// An html file is given and your task is to show more/less information for the selected article. At the start you should do a GET request to the server at adress: http://localhost:3030/jsonstore/advanced/articles/list where the response will be an object with the titles of the articles. By clicking the [More] button for the selected article, it should reveal the content of a hidden div and changes the text of the button to [Less]. Obtain the content by making a GET request to the server at adress: http://localhost:3030/jsonstore/advanced/articles/details/:id where the response will be an object with property id, title, content. When the same button is clicked again (now reading Less), hide the div and change the text of the button to More. Link action should be toggleable (you should be able to click the button infinite amount of times).
+
 function solution() {
     //TODO .....
 }

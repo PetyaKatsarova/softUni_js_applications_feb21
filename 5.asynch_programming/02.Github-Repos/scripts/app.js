@@ -7,9 +7,11 @@ function loadRepos() {
 	// res.blob() returns binar file for imgs, archive, exel file// transform data stream in json() // res.text()
     fetch(url).then(res => {
 		//if(!res.ok) throw new Error('Error in fetch response');
+		console.log(res.status);
 		if(res.status == 404) throw Error("User not found");
 		return res.json();
 		})
+		.then(res => res.json())  // works with and without this,but the res stream should be text or json
 		.then(data => {
 		ul.innerHTML = '';
 
@@ -22,7 +24,7 @@ function loadRepos() {
 
 			li.appendChild(a);
 			ul.appendChild(li);
-			console.log(obj)
+			// console.log(obj)
 		});
 		
 	}).catch(err => {
