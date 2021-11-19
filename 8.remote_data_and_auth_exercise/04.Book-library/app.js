@@ -61,7 +61,7 @@ async function delFromLibrary(e){
     const options = {
         method: 'delete',
         headers: {'Content-Type': 'application/json'},
-        // body: JSON.stringify({title, author})
+        body: JSON.stringify({title, author})
     };
 
 
