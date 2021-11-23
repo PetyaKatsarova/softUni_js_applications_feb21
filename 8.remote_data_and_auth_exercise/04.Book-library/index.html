@@ -37,15 +37,34 @@
         </tbody>
     </table>
 
-    <form>
-        <h3>FORM</h3>
+    <form id="createForm">
+        <h3>Create Book FORM</h3>
         <label>TITLE</label>
         <input type="text" name="title" placeholder="Title...">
         <label>AUTHOR</label>
         <input type="text" name="author" placeholder="Author...">
-        <button>Submit</button>
+        <button type="submit">Submit</button>
     </form>
-    <script src="./app.js"></script>
+    <form id="editForm">
+        <input type="hidden" name="id">
+        <h3>Edit Book FORM</h3>
+        <label>TITLE</label>
+        <input type="text" name="title" placeholder="Title...">
+        <label>AUTHOR</label>
+        <input type="text" name="author" placeholder="Author...">
+        <input type="submit" value="Save">
+        <input type="button" value="Cancel">
+    </form>
+    <form id="deleteForm">
+        <!-- <input type="hidden" name="id"> -->
+        <h3>Delete Book FORM</h3>
+        <label>TITLE</label>
+        <input type="text" name="title" placeholder="Title...">
+        <label>AUTHOR</label>
+        <input type="text" name="author" placeholder="Author...">
+        <button type="submit"></button>
+    </form>
+    <script src="./app.js">Delete</script>
 </body>
 </html>
 
